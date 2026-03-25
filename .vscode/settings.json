@@ -58,10 +58,10 @@
   },
   "eslint.validate": ["javascript", "javascriptreact", "vue", "typescript", "typescriptreact", "json", "jsonc"],
   // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-  "typescript.tsc.autoDetect": "off",
+  "js/ts.tsc.autoDetect": "off",
   "files.trimTrailingWhitespace": true,
   "editor.formatOnSave": false,
   "eslint.enable": true,
   "editor.tabSize": 2,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }
