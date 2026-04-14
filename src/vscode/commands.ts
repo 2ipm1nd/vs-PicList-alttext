@@ -131,7 +131,16 @@ export class Commands {
           }
           if (res) uploadedImages[url] = res
         }
-        if (res) text = text.replace(imgSyntax, res)
+        if (res) {
+          // 保留原始 alt text，僅替換 URL
+          const origAltMatch = imgSyntax.match(/!\[([^\]]*)\]/)
+          const newUrlMatch = res.match(/!\[[^\]]*\]\(([^)]+)\)/)
+          if (origAltMatch && newUrlMatch) {
+            text = text.replace(imgSyntax, `![${origAltMatch[1]}](${newUrlMatch[1]})`)
+          } else {
+            text = text.replace(imgSyntax, res)
+          }
+        }
       }
     }
     const range =
