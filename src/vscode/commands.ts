@@ -25,7 +25,12 @@ export class Commands {
     if (!shouldKeepAfterUploading && input) fs.removeSync(input[0])
     if (writeToEditor) {
       vscode.env.clipboard.writeText(output)
-      await Editor.writeToEditor(output)
+      // 先嘗試偵測游標所在行是否已有 ![alt](url) 結構
+      // 若有，僅替換 URL 保留 alt text；否則走原本整段插入邏輯
+      const replaced = await Uploader.picgoAPI.replaceUrlInCurrentLine(output)
+      if (!replaced) {
+        await Editor.writeToEditor(output)
+      }
     }
     return output
   }
