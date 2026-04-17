@@ -130,6 +130,15 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "%config.enableDragUpload.description%"
+        },
+        "piclist.uploadSourceFormats": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["markdown", "html", "url", "ubb"]
+          },
+          "default": ["markdown"],
+          "markdownDescription": "%config.uploadSourceFormats.description%"
         }
       }
     },
