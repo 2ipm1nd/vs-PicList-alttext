@@ -129,8 +129,9 @@ export class Commands {
       if (url) {
         let res: string | undefined = uploadedImages[url]
         if (!res) {
+          const skipRemote: boolean = config.get('skipRemoteImages') ?? true
           if (isURL(url)) {
-            res = await this.uploadCommand([url], true, false, true)
+            if (!skipRemote) res = await this.uploadCommand([url], true, false, true)
           } else {
             const decodedUrl = decodeURIComponent(url)
             const localPath = path.isAbsolute(decodedUrl) ? decodedUrl : path.join(document.uri.fsPath, '../', decodedUrl)
