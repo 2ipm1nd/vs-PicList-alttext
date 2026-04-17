@@ -132,7 +132,8 @@ export class Commands {
           if (isURL(url)) {
             res = await this.uploadCommand([url], true, false, true)
           } else {
-            const localPath = path.isAbsolute(url) ? url : path.join(document.uri.fsPath, '../', url)
+            const decodedUrl = decodeURIComponent(url)
+            const localPath = path.isAbsolute(decodedUrl) ? decodedUrl : path.join(document.uri.fsPath, '../', decodedUrl)
             if (fs.existsSync(localPath)) {
               res = await this.uploadCommand([localPath], true, false, true)
             }
