@@ -69,7 +69,7 @@ export class Uploader {
         return ''
       }
     } catch (e: any) {
-      showError(String(e))
+      await showError(String(e))
       return ''
     }
   }
@@ -101,9 +101,10 @@ export class Uploader {
       const newAltMatch = newMarkdown.match(/!\[([^\]]*)\]/)
       if (!newUrlMatch) return false
       const newUrl = newUrlMatch[1]
-      const newAlt = newAltMatch ? newAltMatch[1] : ''
-      // 以新 URL 取代行內既有 markdown 語法，保留 alt text
-      const updatedLine = line.replace(mdRegex, `![${newAlt}](${newUrl})`)
+      // 保留原始行的 alt text，不使用上傳結果的 fileName
+      const origAltMatch = line.match(/!\[([^\]]*)\]/)
+      const origAlt = origAltMatch ? origAltMatch[1] : (newAltMatch ? newAltMatch[1] : '')
+      const updatedLine = line.replace(mdRegex, `![${origAlt}](${newUrl})`)
       const range = new vscode.Range(
         new vscode.Position(lineIndex, 0),
         new vscode.Position(lineIndex, line.length),
