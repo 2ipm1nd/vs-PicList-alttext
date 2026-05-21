@@ -34,7 +34,9 @@ jobs:
           # 將 tag (e.g. v1.3.2-r1) 加入檔名：vs-piclist-alttext-1.3.2-r1.vsix
           TAG="${GITHUB_REF_NAME#v}"
           NEW_NAME="vs-piclist-alttext-${TAG}.vsix"
-          mv "$ORIGINAL" "$NEW_NAME"
+          if [ "$ORIGINAL" != "$NEW_NAME" ]; then
+            mv "$ORIGINAL" "$NEW_NAME"
+          fi
           echo "file=$NEW_NAME" >> $GITHUB_OUTPUT
 
       - name: Extract changelog for this version
