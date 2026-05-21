@@ -24,6 +24,15 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Update package.json version to match Git Tag
+        run: |
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = process.env.GITHUB_REF_NAME.replace(/^v/, '');
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n', 'utf8');
+          "
+
       - name: Package VSIX
         run: npx @vscode/vsce package --no-dependencies
 
