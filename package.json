@@ -16,14 +16,15 @@
     "piclist"
   ],
   "bugs": {
-    "url": "https://github.com/Kuingsmile/vs-piclist/issues",
+    "url": "https://github.com/2ipm1nd/vs-PicList-alttext/issues",
     "email": "pkukuing@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Kuingsmile/vs-piclist.git"
+    "url": "https://github.com/2ipm1nd/vs-PicList-alttext.git"
   },
-  "publisher": "test",
+  "author": "2ipm1nd",
+  "publisher": "2ipm1nd",
   "type": "module",
   "main": "./dist/extension.js",
   "scripts": {

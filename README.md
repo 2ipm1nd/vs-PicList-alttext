@@ -13,6 +13,17 @@
 
 Unlike other solutions, `vs-piclist` offers advanced features such as image compression, watermarking, and flexible image processing.
 
+## Comparison with Original Version (vs-piclist)
+
+This is a customized and improved fork of the original `vs-piclist` extension. The key differences and improvements are summarized below:
+
+| Feature / Fix | Original Version (`vs-piclist`) | This Version (`vs-piclist-alttext`) |
+| :--- | :--- | :--- |
+| **`file://` Protocol Support** | Treated as a remote URL and silently skipped when `skipRemoteImages` is enabled. Upload fails because Node `fs` cannot read `file://` schemes. | **Fully Supported.** Automatically resolves `file:///` URIs to native absolute file system paths, enabling seamless upload of local Markdown-embedded images. |
+| **Alt Text Preservation** | Replaces the entire Markdown image line, discarding any custom alt text with the uploaded file name. | **Preserved.** Automatically detects existing `![alt](url)` structures and **only replaces the URL**, preserving your carefully written custom alt text. |
+| **Release Automation** | Requires manual version bumping in `package.json` before tagging/releasing. | **100% Automated.** GitHub Actions automatically syncs `package.json`'s version with the pushed Git Tag and builds/releases smoothly. |
+
+
 ### Prerequisites
 
 Install [PicList](https://github.com/Kuingsmile/PicList) desktop app or [PicList-Core](https://github.com/Kuingsmile/piclist-core) before using this extension.
