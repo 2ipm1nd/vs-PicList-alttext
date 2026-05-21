@@ -58,6 +58,13 @@ export class Commands {
   async uploadImageFromInputBox() {
     let result = await vscode.window.showInputBox({ placeHolder: 'Please input an local image path or URL' })
     const imageReg = /\.(png|jpg|jpeg|webp|gif|bmp|tiff|ico|svg)$/
+    if (result && result.startsWith('file://')) {
+      try {
+        result = vscode.Uri.parse(result).fsPath
+      } catch {
+        result = decodeURIComponent(result.replace(/^file:\/\/\/?/, ''))
+      }
+    }
     if (isURL(result)) {
       return await this.uploadCommand([result!])
     } else if (result && imageReg.test(result)) {
@@ -130,11 +137,21 @@ export class Commands {
         let res: string | undefined = uploadedImages[url]
         if (!res) {
           const skipRemote: boolean = config.get('skipRemoteImages') ?? true
-          if (isURL(url)) {
+          const isRemote = isURL(url) && !url.startsWith('file://')
+          if (isRemote) {
             if (!skipRemote) res = await this.uploadCommand([url], true, false, true)
           } else {
-            const decodedUrl = decodeURIComponent(url)
-            const localPath = path.isAbsolute(decodedUrl) ? decodedUrl : path.join(document.uri.fsPath, '../', decodedUrl)
+            let localPath = ''
+            if (url.startsWith('file://')) {
+              try {
+                localPath = vscode.Uri.parse(url).fsPath
+              } catch {
+                localPath = decodeURIComponent(url.replace(/^file:\/\/\/?/, ''))
+              }
+            } else {
+              const decodedUrl = decodeURIComponent(url)
+              localPath = path.isAbsolute(decodedUrl) ? decodedUrl : path.join(document.uri.fsPath, '../', decodedUrl)
+            }
             if (fs.existsSync(localPath)) {
               res = await this.uploadCommand([localPath], true, false, true)
             }
