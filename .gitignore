@@ -13,3 +13,5 @@ tmp
 assets/test.md
 *.zip
 test.md
+
+graphify-out/
