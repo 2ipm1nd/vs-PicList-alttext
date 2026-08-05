@@ -111,11 +111,12 @@ export class Commands {
     }
   }
 
-  async uploadAllImgInFile(selected = false) {
+  async uploadAllImgInFile() {
     const editor = vscode.window.activeTextEditor
     if (!editor) return
     const document = editor.document
-    let text = selected && !editor.selection.isEmpty ? document.getText(editor.selection) : document.getText()
+    const hasSelection = !editor.selection.isEmpty
+    let text = hasSelection ? document.getText(editor.selection) : document.getText()
     const textLength = text.length
     const config = vscode.workspace.getConfiguration('piclist')
     const formats: string[] = config.get('uploadSourceFormats') ?? ['markdown']
@@ -170,8 +171,7 @@ export class Commands {
         }
       }
     }
-    const range =
-      selected && !editor.selection.isEmpty
+    const range = hasSelection
         ? editor.selection
         : new vscode.Range(document.positionAt(0), document.positionAt(textLength))
     editor.edit(editBuilder => {
@@ -181,6 +181,6 @@ export class Commands {
 
   async uploadSelectedImg() {
     const editor = vscode.window.activeTextEditor
-    if (editor) await this.uploadAllImgInFile(true)
+    if (editor) await this.uploadAllImgInFile()
   }
 }
